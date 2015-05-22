@@ -107,7 +107,7 @@ func main() {
 		} 
 		time.Sleep(time.Second * time.Duration(sendLoop))
 	}
-
+}
 
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest
@@ -115,3 +115,4 @@ func main() {
 	N := 50
 	time.Sleep(time.Second * time.Duration(N))
 }
+
