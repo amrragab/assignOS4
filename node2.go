@@ -26,7 +26,7 @@ var fileList = []string{
 	"1099051_699791809_n.jpg"}
 
 // TODO: Change this to your current password.
-var studentPassword string = "P6Hqjh"
+var studentPassword string = "P6Hjqh"
 
 // Implementing ReceiveHandler for student package.
 type RcvHandler struct{}
@@ -36,6 +36,7 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	content string) {
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
+	fmt.Println(from, " ", to, username," ", content)
 }
 
 func main() {

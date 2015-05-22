@@ -26,7 +26,7 @@ var fileList = []string{
 	"1512714_286659690_n.jpg"}
 
 // TODO: Change this to your current password.
-var studentPassword string = "P6Hqjh"
+var studentPassword string = "P6Hjqh"
 
 // Implementing ReceiveHandler for student package.
 type RcvHandler struct{}
