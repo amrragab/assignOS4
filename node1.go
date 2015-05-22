@@ -54,11 +54,11 @@ func main() {
 	// End of Setup.
 
 	// TODO: Broadcast your files to neighbours.
-	error = student.SendMsg(2,"Hi I am Amr")
+	error = student.SendMsg(2,fileList[0])
 	if error != nil {
 		fmt.Println("Failed to SendMsg to master node:", error)
 		return
-	}
+	} 
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest
 	// path for file.
