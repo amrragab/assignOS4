@@ -26,7 +26,7 @@ var fileList = []string{
 	"1099051_699791809_n.jpg"}
 
 // var to know the sender 
-//var sender int;
+var sender int;
 
 // TODO: Change this to your current password.
 var studentPassword string = "P6Hjqh"
@@ -39,9 +39,11 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	content string) {
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
-	//sender=from;
+	
+	sender=from;
 	fmt.Println(from, " ", to, username," ", content)
-	fmt.Println("rcvHand struct: ",rcvHand)
+	fmt.Printf("%+v\n", rcvHand)
+	//fmt.Println("rcvHand struct: ",rcvHand)
 }
 
 func main() {
@@ -59,6 +61,59 @@ func main() {
 	// End of Setup.
 	// TODO: Broadcast your files to neighbours.
 
+	//sending msgs
+
+	if sender == 1 {
+	for j := 0; j < 3 ; j++ {
+    	//gg:=strconv.Itoa(M[sorted[j]])
+		error = student.SendMsg(3,fileList[j])
+		if error != nil {
+			fmt.Println("Failed to SendMsg to node 3: ", error)
+			return
+		}
+		error = student.SendMsg(4,fileList[j])
+		if error != nil {
+			fmt.Println("Failed to SendMsg to node 4: ", error)
+			return
+		} 
+		
+	}
+	
+
+	} else if sender  == 3 {
+
+		for j := 0; j < 3 ; j++ {
+    	//gg:=strconv.Itoa(M[sorted[j]])
+		error = student.SendMsg(1,fileList[j])
+		if error != nil {
+			fmt.Println("Failed to SendMsg to node 1: ", error)
+			return
+		}
+		error = student.SendMsg(4,fileList[j])
+		if error != nil {
+			fmt.Println("Failed to SendMsg to node 4: ", error)
+			return
+		} 
+		
+		}
+
+	} else if sender == 4 {
+
+		for j := 0; j < 3 ; j++ {
+    	//gg:=strconv.Itoa(M[sorted[j]])
+		error = student.SendMsg(1,fileList[j])
+		if error != nil {
+			fmt.Println("Failed to SendMsg to node 1: ", error)
+			return
+		}
+		error = student.SendMsg(3,fileList[j])
+		if error != nil {
+			fmt.Println("Failed to SendMsg to node 3: ", error)
+			return
+		} 
+		
+	}
+	}
 
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest
