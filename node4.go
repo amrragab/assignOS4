@@ -40,9 +40,7 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 }
 
 func main() {
-	S := 10
-	time.Sleep(time.Second * time.Duration(S))
-
+	
 	// Setup connection to master of current node.
 	student := new(student.Student)
 	error := student.Connect(masterAddr, studentPassword)

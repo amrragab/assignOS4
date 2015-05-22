@@ -41,9 +41,7 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 }
 
 func main() {
-	S := 10
-	time.Sleep(time.Second * time.Duration(S))
-
+	
 	// Setup connection to master of current node.
 	student := new(student.Student)
 	error := student.Connect(masterAddr, studentPassword)
@@ -56,6 +54,8 @@ func main() {
 	rcv := new(RcvHandler)
 	go student.Receive(rcv)
 	// End of Setup.
+S := 10
+	time.Sleep(time.Second * time.Duration(S))
 
 	// TODO: Broadcast your files to neighbours.
 	error = student.SendMsg(2,fileList[0])

@@ -42,13 +42,12 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	
 	sender=from;
 	fmt.Println(from, " ", to, username," ", content)
-	fmt.Printf("%+v\n", rcvHand)
+	//fmt.Printf("%+v\n", rcvHand)
 	//fmt.Println("rcvHand struct: ",rcvHand)
 }
 
 func main() {
-	S := 10
-	time.Sleep(time.Second * time.Duration(S))
+	
 
 	// Setup connection to master of current node.
 	student := new(student.Student)
@@ -65,7 +64,9 @@ func main() {
 	// TODO: Broadcast your files to neighbours.
 
 	//sending msgs
-
+S := 10
+	time.Sleep(time.Second * time.Duration(S))
+	
 	if sender == 1 {
 	for j := 0; j < 3 ; j++ {
 		error = student.SendMsg(3,fileList[j])
