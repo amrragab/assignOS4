@@ -37,9 +37,13 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	content string) {
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
+	fmt.Println(from, " ", to, username," ", content)
 }
 
 func main() {
+	S := 10
+	time.Sleep(time.Second * time.Duration(S))
+
 	// Setup connection to master of current node.
 	student := new(student.Student)
 	error := student.Connect(masterAddr, studentPassword)

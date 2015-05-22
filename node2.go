@@ -47,6 +47,9 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 }
 
 func main() {
+	S := 10
+	time.Sleep(time.Second * time.Duration(S))
+
 	// Setup connection to master of current node.
 	student := new(student.Student)
 	error := student.Connect(masterAddr, studentPassword)
@@ -65,7 +68,6 @@ func main() {
 
 	if sender == 1 {
 	for j := 0; j < 3 ; j++ {
-    	//gg:=strconv.Itoa(M[sorted[j]])
 		error = student.SendMsg(3,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 3: ", error)
@@ -83,7 +85,6 @@ func main() {
 	} else if sender  == 3 {
 
 		for j := 0; j < 3 ; j++ {
-    	//gg:=strconv.Itoa(M[sorted[j]])
 		error = student.SendMsg(1,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 1: ", error)
@@ -100,7 +101,6 @@ func main() {
 	} else if sender == 4 {
 
 		for j := 0; j < 3 ; j++ {
-    	//gg:=strconv.Itoa(M[sorted[j]])
 		error = student.SendMsg(1,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 1: ", error)
