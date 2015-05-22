@@ -60,7 +60,7 @@ S := 10
 	// TODO: Broadcast your files to neighbours.
 	error = student.SendMsg(2,fileList[0])
 	if error != nil {
-		fmt.Println("Failed to SendMsg to master node:", error)
+		fmt.Println("Failed to SendMsg to node2: ", error)
 		return
 	} 
 	// TODO: It's expected to converge after N second
