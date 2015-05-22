@@ -25,6 +25,9 @@ var fileList = []string{
 	"1005860_104234756_n.jpg",
 	"1099051_699791809_n.jpg"}
 
+// var to know the sender 
+//var sender int;
+
 // TODO: Change this to your current password.
 var studentPassword string = "P6Hjqh"
 
@@ -36,7 +39,9 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	content string) {
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
+	//sender=from;
 	fmt.Println(from, " ", to, username," ", content)
+	fmt.Println("rcvHand struct: ",rcvHand)
 }
 
 func main() {
@@ -52,8 +57,8 @@ func main() {
 	rcv := new(RcvHandler)
 	go student.Receive(rcv)
 	// End of Setup.
-
 	// TODO: Broadcast your files to neighbours.
+
 
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest
