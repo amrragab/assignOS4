@@ -24,11 +24,11 @@ var fileList = []string{
 	"4294923_402918889_n.jpg",
 	"1107509_945113888_n.jpg",
 	"1092345_660561345_n.jpg"}
-
+/*
 var sendLoop int = 3
 
 // var to know the sender 
-var sender int = 0
+var sender int = 0*/
 
 // TODO: Change this to your current password.
 var studentPassword string = "P6Hjqh"
@@ -36,18 +36,50 @@ var studentPassword string = "P6Hjqh"
 // Implementing ReceiveHandler for student package.
 type RcvHandler struct{}
 
+
+func handleMsg(from int){
+
+	if from == 2 {
+	for j := 0; j < 3 ; j++ {
+		fmt.Println("node 3 sender 2\n");
+		error = student.SendMsg(4,fileList[j])
+		if error != nil {
+			fmt.Println("Failed to SendMsg to node 4: ", error)
+			return
+		}
+		//time.Sleep(time.Second * time.Duration(sendLoop))
+		
+	}
+	
+
+	} else if from  == 4 {
+		for j := 0; j < 3 ; j++ {
+		fmt.Println("node 3 sender 4\n");			
+		error = student.SendMsg(2,fileList[j])
+		if error != nil {
+			fmt.Println("Failed to SendMsg to node 2: ", error)
+			return
+		} 
+		//time.Sleep(time.Second * time.Duration(sendLoop))
+		}
+	}
+	
+}
+
+
 // Handle a message received.
 func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	content string) {
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
 
-	sender=from;
-	fmt.Println(from, " ", to, username," ", content)
+	go handleMsg(from);
 }
 
 func main() {
 	
+	S := 5
+	time.Sleep(time.Second * time.Duration(S))
 
 	// Setup connection to master of current node.
 	student := new(student.Student)
@@ -64,12 +96,8 @@ func main() {
 
 	// TODO: Broadcast your files to neighbours.
 
-	S := 10
-	time.Sleep(time.Second * time.Duration(S))
-
-	if sender == 0 {
 	for j := 0; j < 3 ; j++ {
-		fmt.Println("node 3 sender 0\n");
+		fmt.Println("Intializing node 3\n");
 		error = student.SendMsg(2,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 2: ", error)
@@ -80,39 +108,19 @@ func main() {
 			fmt.Println("Failed to SendMsg to node 4: ", error)
 			return
 		}
-	time.Sleep(time.Second * time.Duration(sendLoop))
-		
-	}
-	
-	} else if sender == 2 {
-	for j := 0; j < 3 ; j++ {
-		fmt.Println("node 3 sender 2\n");
-		error = student.SendMsg(4,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 4: ", error)
-			return
-		}
-		time.Sleep(time.Second * time.Duration(sendLoop))
+	//time.Sleep(time.Second * time.Duration(sendLoop))
 		
 	}
 	
 
-	} else if sender  == 4 {
-		for j := 0; j < 3 ; j++ {
-		fmt.Println("node 3 sender 4\n");			
-		error = student.SendMsg(2,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 2: ", error)
-			return
-		} 
-		time.Sleep(time.Second * time.Duration(sendLoop))
-	}
-}
 
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest
 	// path for file.
-	N := 50
+	N := 10
 	time.Sleep(time.Second * time.Duration(N))
+
+	fmt.Println("node 2 done ")
+
 }
 

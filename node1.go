@@ -41,7 +41,9 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 }
 
 func main() {
-	
+	S := 5
+	time.Sleep(time.Second * time.Duration(S))
+
 	// Setup connection to master of current node.
 	student := new(student.Student)
 	error := student.Connect(masterAddr, studentPassword)
@@ -54,20 +56,24 @@ func main() {
 	rcv := new(RcvHandler)
 	go student.Receive(rcv)
 	// End of Setup.
-S := 10
-	time.Sleep(time.Second * time.Duration(S))
 
 	// TODO: Broadcast your files to neighbours.
-	error = student.SendMsg(2,fileList[0])
-	if error != nil {
-		fmt.Println("Failed to SendMsg to node2: ", error)
-		return
-	} 
+
+	for j := 0; j < 3 ; j++ {
+		fmt.Println("Intializing node 1\n");
+		error = student.SendMsg(2,fileList[j])
+		if error != nil {
+			fmt.Println("Failed to SendMsg to node 1: ", error)
+			return
+		}
+	}
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest
 	// path for file.
 	N := 10
 	time.Sleep(time.Second * time.Duration(N))
+
+		fmt.Println("node 1 done ")
 
 	// TODO: Print results in output file.
 }
