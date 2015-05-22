@@ -40,7 +40,7 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 }
 
 func main() {
-	
+
 	// Setup connection to master of current node.
 	student := new(student.Student)
 	error := student.Connect(masterAddr, studentPassword)
@@ -59,6 +59,6 @@ func main() {
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest
 	// path for file.
-	N := 10
+	N := 50
 	time.Sleep(time.Second * time.Duration(N))
 }

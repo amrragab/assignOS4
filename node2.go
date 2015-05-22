@@ -26,7 +26,7 @@ var fileList = []string{
 	"1099051_699791809_n.jpg"}
 
 // var to know the sender 
-var sender int;
+var sender int
 
 // TODO: Change this to your current password.
 var studentPassword string = "P6Hjqh"
@@ -57,7 +57,6 @@ func main() {
 		return
 	}
 
-	// Link implementation of ReceiveHandler to student.
 	rcv := new(RcvHandler)
 	go student.Receive(rcv)
 	// End of Setup.
@@ -66,9 +65,10 @@ func main() {
 	//sending msgs
 S := 10
 	time.Sleep(time.Second * time.Duration(S))
-	
+
 	if sender == 1 {
 	for j := 0; j < 3 ; j++ {
+		fmt.Println("1 hna\n");
 		error = student.SendMsg(3,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 3: ", error)
@@ -79,12 +79,13 @@ S := 10
 			fmt.Println("Failed to SendMsg to node 4: ", error)
 			return
 		} 
+    G := 3
+	time.Sleep(time.Second * time.Duration(G))
 		
 	}
 	
 
 	} else if sender  == 3 {
-
 		for j := 0; j < 3 ; j++ {
 		error = student.SendMsg(1,fileList[j])
 		if error != nil {
@@ -100,7 +101,6 @@ S := 10
 		}
 
 	} else if sender == 4 {
-
 		for j := 0; j < 3 ; j++ {
 		error = student.SendMsg(1,fileList[j])
 		if error != nil {

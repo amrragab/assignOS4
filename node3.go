@@ -60,6 +60,6 @@ func main() {
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest
 	// path for file.
-	N := 10
+	N := 50
 	time.Sleep(time.Second * time.Duration(N))
 }
