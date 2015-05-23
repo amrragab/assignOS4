@@ -45,7 +45,7 @@ func handleMsg(from int){
 	if from == 2 {
 	for j := 0; j < 3 ; j++ {
 		fmt.Println("node 3 sender 2\n");
-		error = student.SendMsg(4,fileList[j])
+		error := student.SendMsg(4,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 4: ", error)
 			return
@@ -58,7 +58,7 @@ func handleMsg(from int){
 	} else if from  == 4 {
 		for j := 0; j < 3 ; j++ {
 		fmt.Println("node 3 sender 4\n");			
-		error = student.SendMsg(2,fileList[j])
+		error := student.SendMsg(2,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 2: ", error)
 			return
