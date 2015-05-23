@@ -44,40 +44,15 @@ var St= new(student.Student)
 func handleMsg(from int){
 
 	for j := 0; j < 3 ; j++ {
-			if from == 1 {
-				error := St.SendMsg(3,fileList[j])
-				if error != nil {
-					fmt.Println("Failed to SendMsg to node 3: ", error)
-					return
-					}
-				error = St.SendMsg(4,fileList[j])
-				if error != nil {
-					fmt.Println("Failed to SendMsg to node 4: ", error)
-					return
-					} 
-			} else if from  == 3 {
-				error := St.SendMsg(1,fileList[j])
-				if error != nil {
-					fmt.Println("Failed to SendMsg to node 1: ", error)
-					return
+			for c := 0; c < 3; c++ {
+				if form == connectedNodes[c]{
+					continue
 				}
-				error = St.SendMsg(4,fileList[j])
+				error := st.SendMsg(connectedNodes[c],fileList[j])
 				if error != nil {
-					fmt.Println("Failed to SendMsg to node 4: ", error)
+					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
 					return
-				} 
-
-			} else if from == 4 {
-				error := St.SendMsg(1,fileList[j])
-				if error != nil {
-					fmt.Println("Failed to SendMsg to node 1: ", error)
-					return
-				}
-				error = St.SendMsg(3,fileList[j])
-				if error != nil {
-					fmt.Println("Failed to SendMsg to node 3: ", error)
-					return
-				} 
+					}	
 			}
 	}
 }
