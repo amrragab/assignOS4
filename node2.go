@@ -41,20 +41,21 @@ type RcvHandler struct{}
 var St= new(student.Student)
 
 // to handle the msg after recive handler is caller
-func handleMsg(from int){
+func handleMsg(from int,msg string){
 
-	for j := 0; j < 3 ; j++ {
+	//for j := 0; j < 3 ; j++ {
 			for c := 0; c < 3; c++ {
-				if form == connectedNodes[c]{
+				if from == connectedNodes[c]{
 					continue
 				}
-				error := st.SendMsg(connectedNodes[c],fileList[j])
+				error := St.SendMsg(connectedNodes[c],msg)
 				if error != nil {
 					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
 					return
 					}	
+				fmt.Println("File ",c,": ", msg)
 			}
-	}
+//	}
 }
 
 // Handle a message received.
@@ -63,7 +64,7 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
 	
-	go handleMsg(from);
+	go handleMsg(from,content);
 	//fmt.Printf("%+v\n", rcvHand)
 	//fmt.Println("rcvHand struct: ",rcvHand)
 }

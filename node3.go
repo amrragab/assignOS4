@@ -40,33 +40,19 @@ type RcvHandler struct{}
 //student := new(student.Student)
 var St= new(student.Student)
 
-func handleMsg(from int){
+func handleMsg(from int,msg string){
 
-	if from == 2 {
-	for j := 0; j < 3 ; j++ {
-		fmt.Println("node 3 sender 2\n");
-		error := St.SendMsg(4,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 4: ", error)
-			return
-		}
-		//time.Sleep(time.Second * time.Duration(sendLoop))
-		
-	}
-	
-
-	} else if from  == 4 {
-		for j := 0; j < 3 ; j++ {
-		fmt.Println("node 3 sender 4\n");			
-		error := St.SendMsg(2,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 2: ", error)
-			return
-		} 
-		//time.Sleep(time.Second * time.Duration(sendLoop))
-		}
-	}
-	
+		for c := 0; c < 2; c++ {
+				if from == connectedNodes[c]{
+					continue
+				}
+				error := St.SendMsg(connectedNodes[c],msg)
+				if error != nil {
+					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
+					return
+					}	
+				fmt.Println("File ",c,": ", msg)
+			}
 }
 
 
@@ -76,7 +62,7 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
 
-	go handleMsg(from);
+	go handleMsg(from,content);
 }
 
 func main() {
