@@ -95,7 +95,6 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
 }
-
 func main() {
 
 
@@ -143,7 +142,12 @@ func main() {
 	time.Sleep(time.Second * time.Duration(N))
 	fmt.Println("final results")
 	fmt.Println(P.Files)
-	fmt.Println(P.AdjList)
+	//fmt.Println(P.AdjList)
+	sz := len(P.AdjList)
+	for i := 0 ; i < sz ; i++{
+		fmt.Println(i,":",P.AdjList[i])
+	}
+
 	fmt.Println(len(P.Files))
 	fmt.Println("node 1 done ")
 

@@ -50,12 +50,12 @@ func handleMsg(from int, to int, username string,content string){
 	fmt.Println(from," ",to)
 	lines := strings.Split(content, " ")
 	P.Files[lines[0]] = int(lines[1][0])
+	if( ! strings.Contains(lines[1],string(connectedNodes[0])) ){
+
 				sentstr := fmt.Sprintf("%s5", content)
 				if from == connectedNodes[0]{
 					return
 				}
-								if( ! strings.Contains(lines[1],string(connectedNodes[0])) ){
-
 				error := St.SendMsg(connectedNodes[0],sentstr)
 					x := 2
 				time.Sleep(time.Second * time.Duration(x))
@@ -71,7 +71,8 @@ func handleMsg(from int, to int, username string,content string){
 func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	content string) {
 	//tmp_str := fmt.Sprintf("%s is not connected at node %d",username,to)
-	_, found := P.Files[content]
+	lines := strings.Split(content, " ")
+	_, found := P.Files[lines[0]]
 		if( ! strings.Contains(content,"not connected") && ! found ){
 			go handleMsg(from,to,username,content)
 	}

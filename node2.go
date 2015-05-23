@@ -77,7 +77,8 @@ func handleMsg(from int, to int, username string,content string){
 func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	content string) {
 	//tmp_str := fmt.Sprintf("%s is not connected at node %d",username,to)
-	_, found := P.Files[content]
+	lines := strings.Split(content, " ")
+	_, found := P.Files[lines[0]]
 	if( ! strings.Contains(content,"not connected" ) && ! found){
 			go handleMsg(from,to,username,content)
 	}
