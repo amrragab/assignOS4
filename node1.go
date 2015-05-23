@@ -24,6 +24,7 @@ type Param struct {
 	Files map[string]int
 	AdjList [6]string
 	arr [6][6]int
+	next [6][6]int
 
 }
 
@@ -58,9 +59,10 @@ func constg(str string){
 			}
 			// ex let str = "321"
 			y := int(str[i-1]) - '0'
-			P.arr[x][y] = P.arr[y][x] = 1
-
-
+			P.arr[x][y] = 1
+			P.arr[y][x] = 1
+			P.next[x][y] = y
+			P.next[y][x] = x
 		}
 
 
@@ -114,6 +116,7 @@ func main() {
 	for i := 0; i < 6 ; i++ {
 		for j := 0 ; j < 6 ; j++ {
 			P.arr[i][j] = 1000
+			P.next[i][j] = -1
 		}
 		P.arr[i][i] = 0
 	}
@@ -161,6 +164,24 @@ func main() {
 
 	fmt.Println(len(P.Files))
 	fmt.Println("node 1 done ")
-
+	for i := 1; i < 6 ; i++ {
+		fmt.Println(P.arr[i])
+		fmt.Println("\n")	
+	}	
+for k := 1; k < 6 ; k++ {
+	for i := 1; i < 6 ; i++ {
+		for j := 1; j < 6 ; j++ {
+               if (P.arr[i][k] + P.arr[k][j]) < P.arr[i][j]{
+               P.arr[i][j] = P.arr[i][k] + P.arr[k][j];
+               P.next[i][j]=P.next[i][k]
+               }
+		}
+	}
+}
+fmt.Println("after floyed\n")	
+for i := 1; i < 6 ; i++ {
+		fmt.Println(P.arr[i])
+		fmt.Println("\n")	
+	}	
 	// TODO: Print results in output file.
 }
