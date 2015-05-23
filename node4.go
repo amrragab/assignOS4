@@ -17,6 +17,10 @@ type Message struct {
 	Content  string
 }
 
+type Param struct {
+	Files map[string]int
+	AdjList arr[5]string
+}
 // Global Declarations.
 var masterAddr string = "10.0.0.7:46321"
 var connectedNodes = []int{2, 3, 5}
