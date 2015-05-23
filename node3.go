@@ -36,6 +36,9 @@ var studentPassword string = "P6Hjqh"
 // Implementing ReceiveHandler for student package.
 type RcvHandler struct{}
 
+//5leto global
+student := new(student.Student)
+
 
 func handleMsg(from int){
 
@@ -82,7 +85,6 @@ func main() {
 	time.Sleep(time.Second * time.Duration(S))
 
 	// Setup connection to master of current node.
-	student := new(student.Student)
 	error := student.Connect(masterAddr, studentPassword)
 	if error != nil {
 		fmt.Println("Failed to connect to master node:", error)
