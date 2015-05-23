@@ -22,7 +22,8 @@ type Message struct {
 
 type Param struct {
 	Files map[string]int
-	//AdjList arr[5]string
+	AdjList [6]string
+
 }
 
 var P Param
@@ -45,6 +46,20 @@ type RcvHandler struct{}
 //5leto global
 var St= new(student.Student)
 
+func constg(str string){
+	str = fmt.Sprintf("%s1",str)
+		size := len(str)
+		for i := size - 1; i > 0 ; i--{
+			x := int(str[i]) - '0'
+			if ( ! strings.Contains(P.AdjList[x],string(str[i-1])) ){
+				//P.AdjList[x] = append(P.AdjList[x],string(str[i-1]) )
+				P.AdjList[x] = fmt.Sprintf("%s%s",P.AdjList[x],string(str[i-1]))
+			}
+
+		}
+
+
+}
 // to handle the msg after recive handler is caller
 func handleMsg(from int, to int, username string,content string){
 				fmt.Println(from," ",to," ",content)
@@ -55,6 +70,7 @@ func handleMsg(from int, to int, username string,content string){
 				P.Files[lines[0]] = int(lines[1][0]) - '0'
 				fmt.Println("after", len(P.Files))
 				sentstr := fmt.Sprintf("%s1",content)
+				go constg(lines[1])
 				if( ! strings.Contains(lines[1],string(connectedNodes[0]))) {
 				error := St.SendMsg(connectedNodes[0],sentstr)
 					x := 2
@@ -71,7 +87,8 @@ func handleMsg(from int, to int, username string,content string){
 func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	content string) {
 	//tmp_str := fmt.Sprintf("%s is not connected at node %d",username,to)
-	_, found := P.Files[content]
+	lines := strings.Split(content, " ")
+	_, found := P.Files[lines[0]]
 	if( ! strings.Contains(content,"not connected") && ! found ){
 			go handleMsg(from,to,username,content)
 	}
@@ -83,6 +100,9 @@ func main() {
 
 
 	P.Files = make(map[string]int)
+	for i := 0 ; i < 6 ; i++{
+		P.AdjList[i] = ""
+	}
 	f_size := len(fileList)
 	for i := 0 ; i < f_size ; i++ {
 		P.Files[fileList[i]] = 1
@@ -123,6 +143,7 @@ func main() {
 	time.Sleep(time.Second * time.Duration(N))
 	fmt.Println("final results")
 	fmt.Println(P.Files)
+	fmt.Println(P.AdjList)
 	fmt.Println(len(P.Files))
 	fmt.Println("node 1 done ")
 
