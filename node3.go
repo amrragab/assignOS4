@@ -17,6 +17,10 @@ type Message struct {
 	Content  string
 }
 
+type Param struct {
+	Files map[string]int
+	AdjList arr[5]string
+}
 // Global Declarations.
 var masterAddr string = "10.0.0.6:46321"
 var connectedNodes = []int{2, 4}
@@ -37,11 +41,10 @@ var studentPassword string = "P6Hjqh"
 type RcvHandler struct{}
 
 //5leto global
-//student := new(student.Student)
 var St= new(student.Student)
 
-func handleMsg(from int,msg string){
-
+// to handle the msg after recive handler is caller
+func handleMsg(from int, to int, username string,content string){
 		for c := 0; c < 2; c++ {
 				if from == connectedNodes[c]{
 					continue
@@ -62,7 +65,7 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
 
-	go handleMsg(from,content);
+	go handleMsg(from,to,username,content)
 }
 
 func main() {
@@ -86,18 +89,13 @@ func main() {
 
 	for j := 0; j < 3 ; j++ {
 		fmt.Println("Intializing node 3\n");
-		error = St.SendMsg(2,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 2: ", error)
-			return
-		}
-		error = St.SendMsg(4,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 4: ", error)
-			return
-		}
-	//time.Sleep(time.Second * time.Duration(sendLoop))
-		
+		for c := 0; c < 2; c++ {
+				error = St.SendMsg(connectedNodes[c],fileList[j])
+				if error != nil {
+					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
+					return
+				} 
+			}		
 	}
 	
 

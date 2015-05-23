@@ -17,6 +17,11 @@ type Message struct {
 	Content  string
 }
 
+type Param struct {
+	Files map[string]int
+	AdjList arr[5]string
+}
+
 // Global Declarations.
 var masterAddr string = "10.0.0.8:46321"
 var connectedNodes = []int{4}
@@ -25,10 +30,6 @@ var fileList = []string{
 	"5834591_818124870_n.jpg",
 	"5579596_151574987_n.jpg"}
 
-var sendLoop int = 3
-
-// var to know the sender 
-var sender int = 0
 
 // TODO: Change this to your current password.
 var studentPassword string = "P6Hjqh"
@@ -36,19 +37,37 @@ var studentPassword string = "P6Hjqh"
 // Implementing ReceiveHandler for student package.
 type RcvHandler struct{}
 
+//5leto global
+var St= new(student.Student)
+
+// to handle the msg after recive handler is caller
+func handleMsg(from int, to int, username string,content string){
+
+				if from == connectedNodes[c]{
+					return
+				}
+				error := St.SendMsg(connectedNodes[c],content)
+				if error != nil {
+					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
+					return
+					}	
+				fmt.Println("File ",c,": ", content)
+}
+
 // Handle a message received.
 func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	content string) {
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
-	sender=from;
-	fmt.Println(from, " ", to, username," ", content)
+	go handleMsg(from,to,username,content)
 }
 
 func main() {
+	S := 5
+	time.Sleep(time.Second * time.Duration(S))
+
 	// Setup connection to master of current node.
-	student := new(student.Student)
-	error := student.Connect(masterAddr, studentPassword)
+	error := St.Connect(masterAddr, studentPassword)
 	if error != nil {
 		fmt.Println("Failed to connect to master node:", error)
 		return
@@ -56,28 +75,18 @@ func main() {
 
 	// Link implementation of ReceiveHandler to student.
 	rcv := new(RcvHandler)
-	go student.Receive(rcv)
+	go St.Receive(rcv)
 	// End of Setup.
 
 	// TODO: Broadcast your files to neighbours.
 
-	if sender == 0 {
 	for j := 0; j < 3 ; j++ {
-		fmt.Println("node 5 sender 0\n");
-		error = student.SendMsg(4,fileList[j])
+		fmt.Println("Intializing node 5\n");
+		error = St.SendMsg(connectedNodes[0],fileList[j])
 		if error != nil {
-			fmt.Println("Failed to SendMsg to node 4: ", error)
+			fmt.Println("Failed to SendMsg to node 1: ", error)
 			return
 		}
-	time.Sleep(time.Second * time.Duration(sendLoop))
-		
-	}
-	
-	} else if sender != 4 {
-		fmt.Println("node 5 sender 4\n");
-	time.Sleep(time.Second * time.Duration(sendLoop))
-		
-	}
 	}
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest

@@ -17,6 +17,11 @@ type Message struct {
 	Content  string
 }
 
+type Param struct {
+	Files map[string]int
+	AdjList arr[5]string
+}
+
 // Global Declarations.
 var masterAddr string = "10.0.0.5:46321"
 var connectedNodes = []int{1, 3, 4}
@@ -41,21 +46,19 @@ type RcvHandler struct{}
 var St= new(student.Student)
 
 // to handle the msg after recive handler is caller
-func handleMsg(from int,msg string){
+func handleMsg(from int, to int, username string,content string){
 
-	//for j := 0; j < 3 ; j++ {
-			for c := 0; c < 3; c++ {
+	for c := 0; c < 3; c++ {
 				if from == connectedNodes[c]{
 					continue
 				}
-				error := St.SendMsg(connectedNodes[c],msg)
+				error := St.SendMsg(connectedNodes[c],content)
 				if error != nil {
 					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
 					return
 					}	
-				fmt.Println("File ",c,": ", msg)
+				fmt.Println("File ",c,": ", content)
 			}
-//	}
 }
 
 // Handle a message received.
@@ -64,7 +67,7 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
 	
-	go handleMsg(from,content);
+	go handleMsg(from,to,username,content)
 	//fmt.Printf("%+v\n", rcvHand)
 	//fmt.Println("rcvHand struct: ",rcvHand)
 }
@@ -86,21 +89,14 @@ func main() {
 	// TODO: Broadcast your files to neighbours.	
 
 	for j := 0; j < 3 ; j++ {
-		error = St.SendMsg(1,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 1: ", error)
-			return
-		}
-		error = St.SendMsg(3,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 3: ", error)
-			return
-		}
-		error = St.SendMsg(4,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 4: ", error)
-			return
-		} 		
+		fmt.Println("Intializing node 2\n");
+		for c := 0; c < 3; c++ {
+				error = St.SendMsg(connectedNodes[c],fileList[j])
+				if error != nil {
+					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
+					return
+				} 
+			}
 	}
 	
 
