@@ -43,58 +43,43 @@ var St= new(student.Student)
 // to handle the msg after recive handler is caller
 func handleMsg(from int){
 
-	if from == 1 {
 	for j := 0; j < 3 ; j++ {
-		fmt.Println("node 2 sender 1\n");
-		error := St.SendMsg(3,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 3: ", error)
-			return
-		}
-		error = St.SendMsg(4,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 4: ", error)
-			return
-		} 
-	//time.Sleep(time.Second * time.Duration(sendLoop))
-		
-	}
+			if from == 1 {
+				error := St.SendMsg(3,fileList[j])
+				if error != nil {
+					fmt.Println("Failed to SendMsg to node 3: ", error)
+					return
+					}
+				error = St.SendMsg(4,fileList[j])
+				if error != nil {
+					fmt.Println("Failed to SendMsg to node 4: ", error)
+					return
+					} 
+			} else if from  == 3 {
+				error := St.SendMsg(1,fileList[j])
+				if error != nil {
+					fmt.Println("Failed to SendMsg to node 1: ", error)
+					return
+				}
+				error = St.SendMsg(4,fileList[j])
+				if error != nil {
+					fmt.Println("Failed to SendMsg to node 4: ", error)
+					return
+				} 
 
-	} else if from  == 3 {
-		for j := 0; j < 3 ; j++ {
-		fmt.Println("node 2 sender 3\n");
-		error := St.SendMsg(1,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 1: ", error)
-			return
-		}
-		error = St.SendMsg(4,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 4: ", error)
-			return
-		} 
-		//time.Sleep(time.Second * time.Duration(sendLoop))
+			} else if from == 4 {
+				error := St.SendMsg(1,fileList[j])
+				if error != nil {
+					fmt.Println("Failed to SendMsg to node 1: ", error)
+					return
+				}
+				error = St.SendMsg(3,fileList[j])
+				if error != nil {
+					fmt.Println("Failed to SendMsg to node 3: ", error)
+					return
+				} 
+			}
 	}
-
-	} else if from == 4 {
-		for j := 0; j < 3 ; j++ {
-		fmt.Println("node 2 sender 4\n");
-		error := St.SendMsg(1,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 1: ", error)
-			return
-		}
-		error = St.SendMsg(3,fileList[j])
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 3: ", error)
-			return
-		} 
-		
-		//time.Sleep(time.Second * time.Duration(sendLoop))	
-	}
-	}
-
-
 }
 
 // Handle a message received.
