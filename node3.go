@@ -7,6 +7,7 @@ import (
 	"./core/student"
 	"fmt"
 	"time"
+	"strings"
 )
 
 // Message struct.
@@ -48,17 +49,20 @@ var St= new(student.Student)
 
 // to handle the msg after recive handler is caller
 func handleMsg(from int, to int, username string,content string){
+	fmt.Println(from," ",to)
 		P.Files[content] = from
 		for c := 0; c < 2; c++ {
 				if from == connectedNodes[c]{
 					continue
 				}
 				error := St.SendMsg(connectedNodes[c],content)
+					x := 2
+				time.Sleep(time.Second * time.Duration(x))
 				if error != nil {
 					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
 					return
 					}	
-				fmt.Println("File ",c,": ", content)
+				//fmt.Println("File ",c,": ", content)
 			}
 }
 
@@ -66,10 +70,15 @@ func handleMsg(from int, to int, username string,content string){
 // Handle a message received.
 func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	content string) {
+	//tmp_str := fmt.Sprintf("%s is not connected at node %d",username,to)
+	_, found := P.Files[content]
+		if( ! strings.Contains(content,"not connected") &&  ! found ){
+			go handleMsg(from,to,username,content)
+	}
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
 
-	go handleMsg(from,to,username,content)
+	//go handleMsg(from,to,username,content)
 }
 
 func main() {
@@ -78,10 +87,7 @@ func main() {
 	for i := 0 ; i < f_size ; i++ {
 		P.Files[fileList[i]] = 3
 	}
-	fmt.Println(P.Files)
-	S := 5
-	time.Sleep(time.Second * time.Duration(S))
-
+	//fmt.Println(P.Files)
 	// Setup connection to master of current node.
 	error := St.Connect(masterAddr, studentPassword)
 	if error != nil {
@@ -94,12 +100,17 @@ func main() {
 	go St.Receive(rcv)
 	// End of Setup.
 
+	S := 5
+	time.Sleep(time.Second * time.Duration(S))
+
 	// TODO: Broadcast your files to neighbours.
 
 		fmt.Println("Intializing node 3\n");
 	for j := 0; j < 3 ; j++ {
 		for c := 0; c < 2; c++ {
 				error = St.SendMsg(connectedNodes[c],fileList[j])
+				x := 5
+				time.Sleep(time.Second * time.Duration(x))
 				if error != nil {
 					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
 					return
@@ -112,10 +123,12 @@ func main() {
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest
 	// path for file.
-	N := 10
+	N := 20
 	time.Sleep(time.Second * time.Duration(N))
 
-	fmt.Println("node 2 done ")
+	fmt.Println("node 3 done ")
 
+	//	fmt.Println(P.Files,'\n',len(P.Files))
+	fmt.Println(len(P.Files))
 }
 
