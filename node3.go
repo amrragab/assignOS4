@@ -38,7 +38,7 @@ type RcvHandler struct{}
 
 //5leto global
 //student := new(student.Student)
-var student student.Student
+var student student.Student  = new(student.Student)
 
 func handleMsg(from int){
 
