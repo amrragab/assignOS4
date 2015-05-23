@@ -110,7 +110,6 @@ func main() {
 	// TODO: Broadcast your files to neighbours.	
 
 	for j := 0; j < 3 ; j++ {
-		fmt.Println("Intializing node 2\n");
 		error = St.SendMsg(1,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 1: ", error)
