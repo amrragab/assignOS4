@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"time"
 	"strings"
+	//"strconv"
 )
 
 // Message struct.
@@ -50,15 +51,19 @@ func handleMsg(from int, to int, username string,content string){
 				//if from == connectedNodes[0]{
 				//	return	
 				//}
-				P.Files[content] = from
+				lines := strings.Split(content," ")
+				P.Files[lines[0]] = int(lines[1][0]) - '0'
 				fmt.Println("after", len(P.Files))
-				error := St.SendMsg(connectedNodes[0],content)
+				sentstr := fmt.Sprintf("%s1",content)
+				if( ! strings.Contains(lines[1],string(connectedNodes[0]))) {
+				error := St.SendMsg(connectedNodes[0],sentstr)
 					x := 2
 				time.Sleep(time.Second * time.Duration(x))
 				if error != nil {
 					fmt.Println("Failed to SendMsg to node",connectedNodes[0],": ", error)
 					return
 					}	
+				}
 				//fmt.Println("File ",0,": ", content)
 }
 
@@ -102,7 +107,8 @@ func main() {
 	// TODO: Broadcast your files to neighbours.
 		fmt.Println("Intializing node 1\n");
 	for j := 0; j < 3 ; j++ {
-		error = St.SendMsg(connectedNodes[0],fileList[j])
+		sentstr := fmt.Sprintf("%s 1",fileList[j])
+		error = St.SendMsg(connectedNodes[0],sentstr)
 		x := 5
 				time.Sleep(time.Second * time.Duration(x))
 		if error != nil {
@@ -116,7 +122,7 @@ func main() {
 	N :=20
 	time.Sleep(time.Second * time.Duration(N))
 	fmt.Println("final results")
-	//fmt.Println(P.Files)
+	fmt.Println(P.Files)
 	fmt.Println(len(P.Files))
 	fmt.Println("node 1 done ")
 

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"time"
 	"strings"
+	//"strconv"
 )
 
 // Message struct.
@@ -47,11 +48,15 @@ var St= new(student.Student)
 // to handle the msg after recive handler is caller
 func handleMsg(from int, to int, username string,content string){
 	fmt.Println(from," ",to)
-				P.Files[content] = from
+	lines := strings.Split(content, " ")
+	P.Files[lines[0]] = int(lines[1][0])
+				sentstr := fmt.Sprintf("%s5", content)
 				if from == connectedNodes[0]{
 					return
 				}
-				error := St.SendMsg(connectedNodes[0],content)
+								if( ! strings.Contains(lines[1],string(connectedNodes[0])) ){
+
+				error := St.SendMsg(connectedNodes[0],sentstr)
 					x := 2
 				time.Sleep(time.Second * time.Duration(x))
 				if error != nil {
@@ -59,6 +64,7 @@ func handleMsg(from int, to int, username string,content string){
 					return
 					}	
 				//fmt.Println("File ",0,": ", content)
+				}
 }
 
 // Handle a message received.
@@ -103,7 +109,8 @@ func main() {
 
 	fmt.Println("Intializing node 5\n");
 	for j := 0; j < 3 ; j++ {
-		error = St.SendMsg(connectedNodes[0],fileList[j])
+			sentstr := fmt.Sprintf("%s 5",fileList[j])
+			error = St.SendMsg(connectedNodes[0],sentstr)
 		x := 5
 				time.Sleep(time.Second * time.Duration(x))
 		if error != nil {

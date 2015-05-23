@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"time"
 	"strings"
+	//"strconv"
 )
 
 // Message struct.
@@ -49,12 +50,16 @@ var St= new(student.Student)
 // to handle the msg after recive handler is caller
 func handleMsg(from int, to int, username string,content string){
 	fmt.Println(from," ",to)
-		P.Files[content] = from
+	lines := strings.Split(content, " ")
+	P.Files[lines[0]] = int(lines[1][0])
+		sentstr := fmt.Sprintf("%s4",content)
 		for c := 0; c < 3; c++ {
 				if from == connectedNodes[c]{
 					continue
 				}
-				error := St.SendMsg(connectedNodes[c],content)
+								if( ! strings.Contains(lines[1],string(connectedNodes[c])) ){
+
+				error := St.SendMsg(connectedNodes[c],sentstr)
 					x := 2
 				time.Sleep(time.Second * time.Duration(x))
 				if error != nil {
@@ -62,6 +67,7 @@ func handleMsg(from int, to int, username string,content string){
 					return
 					}	
 				//fmt.Println("File ",c,": ", content)
+				}
 			}
 }
 
@@ -108,7 +114,8 @@ func main() {
 		fmt.Println("Intializing node 4\n");
 	for j := 0; j < 3 ; j++ {
 		for c := 0; c < 3; c++ {
-				error = St.SendMsg(connectedNodes[c],fileList[j])
+			sentstr := fmt.Sprintf("%s 4",fileList[j])
+			error = St.SendMsg(connectedNodes[c],sentstr)
 				x := 5
 				time.Sleep(time.Second * time.Duration(x))
 				if error != nil {

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"time"
 	"strings"
+	//"strconv"
 )
 
 // Message struct.
@@ -50,20 +51,24 @@ var St= new(student.Student)
 // to handle the msg after recive handler is caller
 func handleMsg(from int, to int, username string,content string){
 	fmt.Println(from," ",to)
-		P.Files[content] = from
-		for c := 0; c < 2; c++ {
-				if from == connectedNodes[c]{
+	lines := strings.Split(content, " ")
+	P.Files[lines[0]] =  int(lines[1][0])
+	sentstr := fmt.Sprintf("%s3",content)
+	for c := 0; c < 2; c++ {
+			if from == connectedNodes[c]{
 					continue
-				}
-				error := St.SendMsg(connectedNodes[c],content)
-					x := 2
-				time.Sleep(time.Second * time.Duration(x))
-				if error != nil {
-					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
-					return
-					}	
-				//fmt.Println("File ",c,": ", content)
 			}
+							if( ! strings.Contains(lines[1],string(connectedNodes[c])) ){
+			error := St.SendMsg(connectedNodes[c],sentstr)
+			x := 2
+			time.Sleep(time.Second * time.Duration(x))
+			if error != nil {
+			 	fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
+				return
+			}	
+				//fmt.Println("File ",c,": ", content)
+		}
+	}
 }
 
 
@@ -108,7 +113,8 @@ func main() {
 		fmt.Println("Intializing node 3\n");
 	for j := 0; j < 3 ; j++ {
 		for c := 0; c < 2; c++ {
-				error = St.SendMsg(connectedNodes[c],fileList[j])
+			sentstr := fmt.Sprintf("%s 3",fileList[j])
+			error = St.SendMsg(connectedNodes[c],sentstr)
 				x := 5
 				time.Sleep(time.Second * time.Duration(x))
 				if error != nil {
