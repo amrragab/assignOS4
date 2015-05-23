@@ -38,19 +38,20 @@ type RcvHandler struct{}
 
 //5leto global
 //student := new(student.Student)
-var student student.Student = new(student.Student)
+var St= new(student.Student)
+
 // to handle the msg after recive handler is caller
 func handleMsg(from int){
 
 	if from == 1 {
 	for j := 0; j < 3 ; j++ {
 		fmt.Println("node 2 sender 1\n");
-		error := student.SendMsg(3,fileList[j])
+		error := St.SendMsg(3,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 3: ", error)
 			return
 		}
-		error := student.SendMsg(4,fileList[j])
+		error = St.SendMsg(4,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 4: ", error)
 			return
@@ -62,12 +63,12 @@ func handleMsg(from int){
 	} else if from  == 3 {
 		for j := 0; j < 3 ; j++ {
 		fmt.Println("node 2 sender 3\n");
-		error := student.SendMsg(1,fileList[j])
+		error := St.SendMsg(1,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 1: ", error)
 			return
 		}
-		error := student.SendMsg(4,fileList[j])
+		error = St.SendMsg(4,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 4: ", error)
 			return
@@ -78,12 +79,12 @@ func handleMsg(from int){
 	} else if from == 4 {
 		for j := 0; j < 3 ; j++ {
 		fmt.Println("node 2 sender 4\n");
-		error := student.SendMsg(1,fileList[j])
+		error := St.SendMsg(1,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 1: ", error)
 			return
 		}
-		error := student.SendMsg(3,fileList[j])
+		error = St.SendMsg(3,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 3: ", error)
 			return
@@ -112,31 +113,30 @@ func main() {
 	S := 5
 	time.Sleep(time.Second * time.Duration(S))
 	// Setup connection to master of current node.
-	student = new(student.Student)
-	error := student.Connect(masterAddr, studentPassword)
+	error := St.Connect(masterAddr, studentPassword)
 	if error != nil {
 		fmt.Println("Failed to connect to master node:", error)
 		return
 	}
 
 	rcv := new(RcvHandler)
-	go student.Receive(rcv)
+	go St.Receive(rcv)
 	// End of Setup.
 	// TODO: Broadcast your files to neighbours.	
 
 	for j := 0; j < 3 ; j++ {
 		fmt.Println("Intializing node 2\n");
-		error = student.SendMsg(1,fileList[j])
+		error = St.SendMsg(1,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 1: ", error)
 			return
 		}
-		error = student.SendMsg(3,fileList[j])
+		error = St.SendMsg(3,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 3: ", error)
 			return
 		}
-		error = student.SendMsg(4,fileList[j])
+		error = St.SendMsg(4,fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 4: ", error)
 			return
