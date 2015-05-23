@@ -22,7 +22,6 @@ type Message struct {
 
 type Param struct {
 	Files map[string]int
-	AdjList [6]string
     
     ///////////// Floyd Marshall algo intilization arrays
 	arr [6][6]int
@@ -55,10 +54,6 @@ func constg(str string){
 		size := len(str)
 		for i := size - 1; i > 0 ; i--{
 			x := int(str[i]) - '0'
-			if ( ! strings.Contains(P.AdjList[x],string(str[i-1])) ){
-				//P.AdjList[x] = append(P.AdjList[x],string(str[i-1]) )
-				P.AdjList[x] = fmt.Sprintf("%s%s",P.AdjList[x],string(str[i-1]))
-			}
 			// ex let str = "321"
 			y := int(str[i-1]) - '0'
 			P.arr[x][y] = 1
@@ -128,11 +123,9 @@ func Path(u int, v int) []int{
 
 func main() {
 
+//// intialize the map that will have all files and thier node
 
 	P.Files = make(map[string]int)
-	for i := 0 ; i < 6 ; i++{
-		P.AdjList[i] = ""
-	}
 	f_size := len(fileList)
 	for i := 0 ; i < f_size ; i++ {
 		P.Files[fileList[i]] = 1
@@ -166,14 +159,16 @@ func main() {
 
 	// TODO: Broadcast your files to neighbours.
 		fmt.Println("Intializing node 1\n");
-	for j := 0; j < 3 ; j++ {
-		sentstr := fmt.Sprintf("%s 1",fileList[j])
-		error = St.SendMsg(connectedNodes[0],sentstr)
-		x := 5
-				time.Sleep(time.Second * time.Duration(x))
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 1: ", error)
-			return
+	for j := 0; j < len(fileList) ; j++ {
+		for c := 0; c < len(connectedNodes); c++ {
+			sentstr := fmt.Sprintf("%s 1",fileList[j])
+			error = St.SendMsg(connectedNodes[0],sentstr)
+			/*x := 5
+			time.Sleep(time.Second * time.Duration(x))*/
+			if error != nil {
+				fmt.Println("Failed to SendMsg to node 1: ", error)
+				return
+			}
 		}
 	}
 	// TODO: It's expected to converge after N second
@@ -181,16 +176,12 @@ func main() {
 	// path for file.
 	N :=20
 	time.Sleep(time.Second * time.Duration(N))
+	
 	fmt.Println("final results")
 	fmt.Println(P.Files)
-	//fmt.Println(P.AdjList)
-	sz := len(P.AdjList)
-	for i := 0 ; i < sz ; i++{
-		fmt.Println(i,":",P.AdjList[i])
-	}
-
 	fmt.Println(len(P.Files))
 	fmt.Println("node 1 done ")
+	
 	for i := 1; i < 6 ; i++ {
 		fmt.Println(P.arr[i])
 		fmt.Println("\n")	
