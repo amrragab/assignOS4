@@ -102,6 +102,27 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
 	// TODO: Implement handling a message received.
 }
+
+/*procedure Path(u, v)
+   if next[u][v] = null then
+       return []
+   path = [u]
+   while u ≠ v
+       u ← next[u][v]
+       path.append(u)
+   return path*/
+func Path(u int, v int) []int{
+	if ( next[u][v]  == -1){
+				return []
+			}
+			path = append(path,u)
+			for ; u != v ; {
+				u = next[u][v]
+				path = append(path,u)
+			}
+			return path
+}
+
 func main() {
 
 
