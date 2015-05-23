@@ -23,6 +23,8 @@ type Message struct {
 type Param struct {
 	Files map[string]int
 	AdjList [6]string
+    
+    ///////////// Floyd Marshall algo intilization arrays
 	arr [6][6]int
 	next [6][6]int
 
@@ -112,12 +114,13 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
        path.append(u)
    return path*/
 func Path(u int, v int) []int{
-	if ( next[u][v]  == -1){
-				return []
+	var path []int 
+	if (P.next[u][v]  == -1){
+			return nil
 			}
 			path = append(path,u)
 			for ; u != v ; {
-				u = next[u][v]
+				u = P.next[u][v]
 				path = append(path,u)
 			}
 			return path
@@ -134,6 +137,9 @@ func main() {
 	for i := 0 ; i < f_size ; i++ {
 		P.Files[fileList[i]] = 1
 	}
+
+	///////////// Floyd Marshall algo intilization arrays
+
 	for i := 0; i < 6 ; i++ {
 		for j := 0 ; j < 6 ; j++ {
 			P.arr[i][j] = 1000
@@ -189,6 +195,8 @@ func main() {
 		fmt.Println(P.arr[i])
 		fmt.Println("\n")	
 	}	
+
+////////// Floyd Marshall algorithm on array to find the shortest path 
 for k := 1; k < 6 ; k++ {
 	for i := 1; i < 6 ; i++ {
 		for j := 1; j < 6 ; j++ {
@@ -199,10 +207,18 @@ for k := 1; k < 6 ; k++ {
 		}
 	}
 }
+//// Print  the node on which the file was found
+fileFound := P.Files["5834591_818124870_n.jpg"]
+
+
+//////// call path function that find the shortesst path betweeen nodes 1 and the node on which the file was found (fileFound)
+
+printPath:= Path(1,fileFound)
 fmt.Println("after floyed\n")	
 for i := 1; i < 6 ; i++ {
 		fmt.Println(P.arr[i])
 		fmt.Println("\n")	
 	}	
+fmt.Println(printPath)
 	// TODO: Print results in output file.
 }
