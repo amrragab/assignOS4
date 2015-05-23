@@ -23,6 +23,7 @@ type Message struct {
 type Param struct {
 	Files map[string]int
 	AdjList [6]string
+	arr [6][6]int
 
 }
 
@@ -55,6 +56,10 @@ func constg(str string){
 				//P.AdjList[x] = append(P.AdjList[x],string(str[i-1]) )
 				P.AdjList[x] = fmt.Sprintf("%s%s",P.AdjList[x],string(str[i-1]))
 			}
+			// ex let str = "321"
+			y := int(str[i-1]) - '0'
+			P.arr[x][y] = P.arr[y][x] = 1
+
 
 		}
 
@@ -105,6 +110,12 @@ func main() {
 	f_size := len(fileList)
 	for i := 0 ; i < f_size ; i++ {
 		P.Files[fileList[i]] = 1
+	}
+	for i := 0; i < 6 ; i++ {
+		for j := 0 ; j < 6 ; j++ {
+			P.arr[i][j] = 1000
+		}
+		P.arr[i][i] = 0
 	}
 	//fmt.Println("length", len(P.Files))
 	
