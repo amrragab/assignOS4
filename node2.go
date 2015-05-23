@@ -19,8 +19,11 @@ type Message struct {
 
 type Param struct {
 	Files map[string]int
-	AdjList arr[5]string
+	//AdjList arr[5]string
 }
+
+var P Param
+
 
 // Global Declarations.
 var masterAddr string = "10.0.0.5:46321"
@@ -48,6 +51,7 @@ var St= new(student.Student)
 // to handle the msg after recive handler is caller
 func handleMsg(from int, to int, username string,content string){
 
+	P.Files[content] = from
 	for c := 0; c < 3; c++ {
 				if from == connectedNodes[c]{
 					continue
@@ -73,7 +77,12 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 }
 
 func main() {
-	
+	P.Files = make(map[string]int)
+	f_size := len(fileList)
+	for i := 0 ; i < f_size ; i++ {
+		P.Files[fileList[i]] = 2
+	}
+	fmt.Println(P.Files)
 	S := 5
 	time.Sleep(time.Second * time.Duration(S))
 	// Setup connection to master of current node.
@@ -87,9 +96,8 @@ func main() {
 	go St.Receive(rcv)
 	// End of Setup.
 	// TODO: Broadcast your files to neighbours.	
-
+	fmt.Println("Intializing node 2\n");
 	for j := 0; j < 3 ; j++ {
-		fmt.Println("Intializing node 2\n");
 		for c := 0; c < 3; c++ {
 				error = St.SendMsg(connectedNodes[c],fileList[j])
 				if error != nil {

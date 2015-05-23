@@ -20,8 +20,11 @@ type Message struct {
 
 type Param struct {
 	Files map[string]int
-	AdjList arr[5]string
+	//AdjList arr[5]string
 }
+
+var P Param
+
 
 // Global Declarations.
 var masterAddr string = "10.0.0.4:46321"
@@ -42,15 +45,16 @@ var St= new(student.Student)
 
 // to handle the msg after recive handler is caller
 func handleMsg(from int, to int, username string,content string){
-				if from == connectedNodes[c]{
+				if from == connectedNodes[0]{
 					return	
 				}
-				error := St.SendMsg(connectedNodes[c],content)
+				P.Files[content] = from
+				error := St.SendMsg(connectedNodes[0],content)
 				if error != nil {
-					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
+					fmt.Println("Failed to SendMsg to node",connectedNodes[0],": ", error)
 					return
 					}	
-				fmt.Println("File ",c,": ", content)
+				fmt.Println("File ",0,": ", content)
 }
 
 // Handle a message received.
@@ -62,6 +66,12 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 }
 
 func main() {
+	P.Files = make(map[string]int)
+	f_size := len(fileList)
+	for i := 0 ; i < f_size ; i++ {
+		P.Files[fileList[i]] = 1
+	}
+	fmt.Println(P.Files)
 	S := 5
 	time.Sleep(time.Second * time.Duration(S))
 
@@ -78,9 +88,8 @@ func main() {
 	// End of Setup.
 
 	// TODO: Broadcast your files to neighbours.
-
-	for j := 0; j < 3 ; j++ {
 		fmt.Println("Intializing node 1\n");
+	for j := 0; j < 3 ; j++ {
 		error = St.SendMsg(connectedNodes[0],fileList[j])
 		if error != nil {
 			fmt.Println("Failed to SendMsg to node 1: ", error)
@@ -92,8 +101,9 @@ func main() {
 	// path for file.
 	N := 10
 	time.Sleep(time.Second * time.Duration(N))
-
-		fmt.Println("node 1 done ")
+	fmt.Println("final results")
+	fmt.Println(P.Files)
+	fmt.Println("node 1 done ")
 
 	// TODO: Print results in output file.
 }
