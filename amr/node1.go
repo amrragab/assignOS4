@@ -220,15 +220,11 @@ func main() {
 /////////////////////////////////////////////// write into output file ////////////////////////////////
 	out1,_ := os.Create("output")
 	defer out1.Close()    
-	out1.WriteString("--------------------- List of all files in all nodes ------------------------ \n\n")
+/*	out1.WriteString("--------------------- List of all files in all nodes ------------------------ \n\n")
     for key,value := range P.Files {
     	    b := strconv.Itoa(value)
 		    out1.WriteString(key+" ---> "+b+"\n")
-	}   
-
-	out1.WriteString("\n\n--------------------- Graph ------------------------ \n\n")	
-
-	out1.WriteString("\n\n---------------------------------------------------- \n\n")
+	}*/   
 
 	for i := 1; i < 6 ; i++ {
 		fmt.Println(P.arr[i])
@@ -248,6 +244,32 @@ for k := 1; k < 6 ; k++ {
 		}
 	}
 }
+
+
+out1.WriteString("\n\n--------------------- Graph ------------------------ \n\n")	
+
+out1.WriteString("\n Graph shows the connection between each node and other nodes\n")	
+
+for i := 1; i < 6 ; i++ {
+		u := strconv.Itoa(i)
+		S2 :=(u + " --> ")
+	//	out1.WriteString(u + " --> ")
+		for j := 1; j < 6 ; j++ {
+			u2 := strconv.Itoa(j)
+			if P.arr[i][j] == 1{
+				//out1.WriteString(u2 + " ,")
+				S2 =S2 + (u2 + " ,")
+			}
+		}
+		if last := len(S2) - 1; last >= 0 && S2[last] == ',' {
+        	S2 = S2[:last]
+   		 }
+		out1.WriteString(S2 + "\n")
+}	
+
+out1.WriteString("\n\n---------------------------------------------------- \n\n")
+
+
 //// Print  the node on which the file was found
 fileFound := P.Files["5834591_818124870_n.jpg"]
 
