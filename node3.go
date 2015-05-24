@@ -54,11 +54,11 @@ func handleMsg(from int, to int, username string,content string){
 	lines := strings.Split(content, " ")
 	P.Files[lines[0]] =  int(lines[1][0])
 	sentstr := fmt.Sprintf("%s3",content)
-	for c := 0; c < 2; c++ {
+	for c := 0; c < len(connectedNodes); c++ {
 			if from == connectedNodes[c]{
 					continue
 			}
-							if( ! strings.Contains(lines[1],string(connectedNodes[c])) ){
+			if( ! strings.Contains(lines[1],string(connectedNodes[c])) ){
 			error := St.SendMsg(connectedNodes[c],sentstr)
 			x := 2
 			time.Sleep(time.Second * time.Duration(x))
@@ -112,8 +112,8 @@ func main() {
 	// TODO: Broadcast your files to neighbours.
 
 		fmt.Println("Intializing node 3\n");
-	for j := 0; j < 3 ; j++ {
-		for c := 0; c < 2; c++ {
+	for j := 0; j < len(fileList) ; j++ {
+		for c := 0; c < len(connectedNodes); c++ {
 			sentstr := fmt.Sprintf("%s 3",fileList[j])
 			error = St.SendMsg(connectedNodes[c],sentstr)
 				x := 5
@@ -130,12 +130,11 @@ func main() {
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest
 	// path for file.
-	N := 20
+	N := 30
 	time.Sleep(time.Second * time.Duration(N))
 
 	fmt.Println("node 3 done ")
 
-	//	fmt.Println(P.Files,'\n',len(P.Files))
-	fmt.Println(len(P.Files))
+	fmt.Println(P.Files,'\n',len(P.Files))
 }
 

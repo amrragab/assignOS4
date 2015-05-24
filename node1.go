@@ -9,7 +9,8 @@ import (
 	"fmt"
 	"time"
 	"strings"
-	//"strconv"
+	"strconv"
+	"os"
 )
 
 // Message struct.
@@ -26,11 +27,9 @@ type Param struct {
     ///////////// Floyd Marshall algo intilization arrays
 	arr [6][6]int
 	next [6][6]int
-
 }
 
 var P Param
-
 
 // Global Declarations.
 var masterAddr string = "10.0.0.4:46321"
@@ -66,25 +65,26 @@ func constg(str string){
 }
 // to handle the msg after recive handler is caller
 func handleMsg(from int, to int, username string,content string){
-				fmt.Println(from," ",to," ",content)
-				//if from == connectedNodes[0]{
-				//	return	
-				//}
+				//fmt.Println(from," ",to," ",content)
 				lines := strings.Split(content," ")
 				P.Files[lines[0]] = int(lines[1][0]) - '0'
-				fmt.Println("after", len(P.Files))
+				//fmt.Println("after", len(P.Files))
 				sentstr := fmt.Sprintf("%s1",content)
 				go constg(lines[1])
-				if( ! strings.Contains(lines[1],string(connectedNodes[0]))) {
-				error := St.SendMsg(connectedNodes[0],sentstr)
+		for c := 0; c < len(connectedNodes); c++ {
+				if from == connectedNodes[c]{
+					continue
+				}
+				if( ! strings.Contains(lines[1],string(connectedNodes[c]))) {
+				error := St.SendMsg(connectedNodes[c],sentstr)
 					x := 2
 				time.Sleep(time.Second * time.Duration(x))
 				if error != nil {
-					fmt.Println("Failed to SendMsg to node",connectedNodes[0],": ", error)
+					fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
 					return
 					}	
 				}
-				//fmt.Println("File ",0,": ", content)
+			}
 }
 
 // Handle a message received.
@@ -96,18 +96,9 @@ func (rcvHand *RcvHandler) ReceiveHandler(from int, to int, username string,
 	if( ! strings.Contains(content,"not connected") && ! found ){
 			go handleMsg(from,to,username,content)
 	}
-	// DONOT CHANGE PARAMENTERS OR FUNCTION HEADER.
-	// TODO: Implement handling a message received.
 }
 
-/*procedure Path(u, v)
-   if next[u][v] = null then
-       return []
-   path = [u]
-   while u ≠ v
-       u ← next[u][v]
-       path.append(u)
-   return path*/
+///// path reconstruction function to get the shortest path -> Floyd Marshall Algo.
 func Path(u int, v int) []int{
 	var path []int 
 	if (P.next[u][v]  == -1){
@@ -158,13 +149,13 @@ func main() {
 	time.Sleep(time.Second * time.Duration(S))
 
 	// TODO: Broadcast your files to neighbours.
-		fmt.Println("Intializing node 1\n");
+	//fmt.Println("Intializing node 1\n");
 	for j := 0; j < len(fileList) ; j++ {
 		for c := 0; c < len(connectedNodes); c++ {
 			sentstr := fmt.Sprintf("%s 1",fileList[j])
-			error = St.SendMsg(connectedNodes[0],sentstr)
-			/*x := 5
-			time.Sleep(time.Second * time.Duration(x))*/
+			error = St.SendMsg(connectedNodes[c],sentstr)
+			x := 5
+			time.Sleep(time.Second * time.Duration(x))
 			if error != nil {
 				fmt.Println("Failed to SendMsg to node 1: ", error)
 				return
@@ -177,15 +168,30 @@ func main() {
 	N :=20
 	time.Sleep(time.Second * time.Duration(N))
 	
-	fmt.Println("final results")
-	fmt.Println(P.Files)
-	fmt.Println(len(P.Files))
-	fmt.Println("node 1 done ")
-	
+	//fmt.Println("final results")
+	//fmt.Println(P.Files)
+	//fmt.Println(len(P.Files))
+	//fmt.Println("node 1 done ")
+
+/////////////////////////////////////////////// write into output file ////////////////////////////////
+	out1,_ := os.Create("output")
+	defer out1.Close()    
+	out1.WriteString("--------------------- List of all files in all nodes ------------------------ \n\n")
+    for key,value := range P.Files {
+    	    b := strconv.Itoa(value)
+		    out1.WriteString(key+" ---> "+b+"\n")
+	}   
+
+	out1.WriteString("\n\n--------------------- Graph ------------------------ \n\n")	
+
+	out1.WriteString("\n\n---------------------------------------------------- \n\n")
+
 	for i := 1; i < 6 ; i++ {
 		fmt.Println(P.arr[i])
 		fmt.Println("\n")	
 	}	
+
+
 
 ////////// Floyd Marshall algorithm on array to find the shortest path 
 for k := 1; k < 6 ; k++ {
@@ -201,10 +207,24 @@ for k := 1; k < 6 ; k++ {
 //// Print  the node on which the file was found
 fileFound := P.Files["5834591_818124870_n.jpg"]
 
+fileFoundOut := strconv.Itoa(fileFound)
+out1.WriteString("\n\nFile -- 5834591_818124870_n.jpg -- found in node: "+ fileFoundOut +"\n\n")
 
 //////// call path function that find the shortesst path betweeen nodes 1 and the node on which the file was found (fileFound)
 
 printPath:= Path(1,fileFound)
+
+out1.WriteString("\n\n--------------------- Shortest Path ------------------------ \n\n")	
+
+for i := 0; i < len(printPath) ; i++ {
+	g := strconv.Itoa(printPath[i])
+	if (i != len(printPath)-1){
+		out1.WriteString(g + " --> ")
+	}else{
+		out1.WriteString(g + "\n\n")
+	}
+}	
+
 fmt.Println("after floyed\n")	
 for i := 1; i < 6 ; i++ {
 		fmt.Println(P.arr[i])

@@ -50,21 +50,25 @@ func handleMsg(from int, to int, username string,content string){
 	fmt.Println(from," ",to)
 	lines := strings.Split(content, " ")
 	P.Files[lines[0]] = int(lines[1][0])
-	if( ! strings.Contains(lines[1],string(connectedNodes[0])) ){
-
-				sentstr := fmt.Sprintf("%s5", content)
-				if from == connectedNodes[0]{
-					return
+	sentstr := fmt.Sprintf("%s5", content)
+		for c := 0; c < len(connectedNodes); c++ {
+				if from == connectedNodes[c]{
+					continue
 				}
-				error := St.SendMsg(connectedNodes[0],sentstr)
-					x := 2
-				time.Sleep(time.Second * time.Duration(x))
-				if error != nil {
-					fmt.Println("Failed to SendMsg to node",connectedNodes[0],": ", error)
-					return
-					}	
-				//fmt.Println("File ",0,": ", content)
-				}
+				if( ! strings.Contains(lines[1],string(connectedNodes[c])) ){
+						if from == connectedNodes[c]{
+							return
+						}
+						error := St.SendMsg(connectedNodes[c],sentstr)
+						x := 2
+						time.Sleep(time.Second * time.Duration(x))
+						if error != nil {
+							fmt.Println("Failed to SendMsg to node",connectedNodes[c],": ", error)
+							return
+						}	
+							//fmt.Println("File ",0,": ", content)
+					}
+			}
 }
 
 // Handle a message received.
@@ -109,22 +113,23 @@ func main() {
 	// TODO: Broadcast your files to neighbours.
 
 	fmt.Println("Intializing node 5\n");
-	for j := 0; j < 3 ; j++ {
-			sentstr := fmt.Sprintf("%s 5",fileList[j])
-			error = St.SendMsg(connectedNodes[0],sentstr)
-		x := 5
-				time.Sleep(time.Second * time.Duration(x))
-		if error != nil {
-			fmt.Println("Failed to SendMsg to node 1: ", error)
-			return
+	for j := 0; j < len(fileList) ; j++ {
+		for c := 0; c < len(connectedNodes); c++ {
+				sentstr := fmt.Sprintf("%s 5",fileList[j])
+				error = St.SendMsg(connectedNodes[c],sentstr)
+			x := 5
+					time.Sleep(time.Second * time.Duration(x))
+			if error != nil {
+				fmt.Println("Failed to SendMsg to node 1: ", error)
+				return
+			}
 		}
 	}
 	// TODO: It's expected to converge after N second
 	// To be able to print a stable graph and shortest
 	// path for file.
-	N := 20
+	N := 30
 	time.Sleep(time.Second * time.Duration(N))
 
-	//	fmt.Println(P.Files,'\n',len(P.Files))
-	fmt.Println(len(P.Files))
+	fmt.Println(P.Files,'\n',len(P.Files))
 }

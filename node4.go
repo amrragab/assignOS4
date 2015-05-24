@@ -53,7 +53,7 @@ func handleMsg(from int, to int, username string,content string){
 	lines := strings.Split(content, " ")
 	P.Files[lines[0]] = int(lines[1][0])
 		sentstr := fmt.Sprintf("%s4",content)
-		for c := 0; c < 3; c++ {
+		for c := 0; c < len(connectedNodes); c++ {
 				if from == connectedNodes[c]{
 					continue
 				}
@@ -112,8 +112,8 @@ func main() {
 	
 
 		fmt.Println("Intializing node 4\n");
-	for j := 0; j < 3 ; j++ {
-		for c := 0; c < 3; c++ {
+	for j := 0; j < len(fileList) ; j++ {
+		for c := 0; c < len(connectedNodes); c++ {
 			sentstr := fmt.Sprintf("%s 4",fileList[j])
 			error = St.SendMsg(connectedNodes[c],sentstr)
 				x := 5
@@ -131,6 +131,5 @@ func main() {
 	N := 20
 	time.Sleep(time.Second * time.Duration(N))
 
-	//	fmt.Println(P.Files,'\n',len(P.Files))
-	fmt.Println(len(P.Files))
+	fmt.Println(P.Files,'\n',len(P.Files))
 }
